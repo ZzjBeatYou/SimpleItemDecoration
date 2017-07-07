@@ -1,4 +1,4 @@
-package com.simple.activity.utils;
+package com.mop.activity.widget;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -6,6 +6,8 @@ import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.mop.activity.utils.Utils;
 
 /**
  * Created by zzj on 2017/7/7.
@@ -89,15 +91,25 @@ public class SimpleItemDecoration extends RecyclerView.ItemDecoration {
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof LinearLayoutManager) {
             if (((LinearLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.VERTICAL) {
-                outRect.top = builder.getDividerHeight();
+                if (builder.isShowFirstDivider()) {
+                    outRect.top = builder.getDividerHeight();
+                } else {
+                    outRect.bottom = builder.getDividerHeight();
+                }
             } else {
-                outRect.left = builder.getDividerWidth();
+                if (builder.isShowFirstDivider()) {
+                    outRect.left = builder.getDividerWidth();
+                } else {
+                    outRect.bottom = builder.getDividerWidth();
+                }
             }
 
         }
     }
 
     public static class Builder {
+
+        private final static boolean defaultShowFirstDivider = false;
 
         /* 分割的高度 用于垂直线性布局 */
         private int dividerHeight;
@@ -121,7 +133,7 @@ public class SimpleItemDecoration extends RecyclerView.ItemDecoration {
         private int dividerColor;
 
         /* 是否显示RecyclerView的第一个分割块*/
-        private boolean showFirstDivider = true;
+        private boolean showFirstDivider = defaultShowFirstDivider;
 
         private int getDividerHeight() {
             return dividerHeight;
